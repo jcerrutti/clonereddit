@@ -1,0 +1,16 @@
+.selected {
+  background-color: #c3edea;
+}
+
+.post-list {
+  cursor: default;
+  margin: 20px 0;
+}
+
+.author {
+  font-size: .7rem;
+}
+
+.title {
+  margin: 0;
+}
