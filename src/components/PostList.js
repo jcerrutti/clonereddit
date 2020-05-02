@@ -8,7 +8,7 @@ export default function PostList({ post, onClickHandler, isSelected }) {
     <div className={className} onClick={() => onClickHandler(post)}>
       <h6 className="title">{post.title}</h6>
       <span className="author">by {post.author}</span>
-      <span>{moment(post.created).fromNow()}</span>
+      <span>{moment(post.created).utc().format('YYYY-MM-DD HH:mm:ss Z')}</span>
     </div>
   );
 }
