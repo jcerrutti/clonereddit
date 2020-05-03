@@ -1,0 +1,32 @@
+.selected {
+  background-color: #c3edea;
+}
+
+.post-list {
+  cursor: default;
+  margin: 20px 0;
+}
+
+.author,
+.date-created,
+.comments {
+  font-size: 0.7rem;
+}
+
+.title {
+  margin: 0;
+}
+
+.title span {
+  margin-right: 6px;
+}
+
+.comments {
+  display: flex;
+  align-items: center;
+}
+
+.comment-icon {
+  width: 10px;
+  margin-right: 4px;
+}

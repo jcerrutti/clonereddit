@@ -5,23 +5,23 @@ import { fetchPosts } from '../actions';
 import './style.css';
 
 import Sidebar from './sidebar';
-import HomePost from './home-post';
+import Home from './home';
 
 class RedditApp extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchPosts('node'));
+    dispatch(fetchPosts('reactjs'));
   }
 
   render() {
-    const { posts, postSelected, isFetching, lastUpdated } = this.props;
+    const { posts, postSelected, isFetching } = this.props;
 
     return (
       <div className="main-container">
-        <Sidebar posts={posts} />
+        <Sidebar posts={posts} isFetching={isFetching} />
         <div>
-          <h1>CloneReddit</h1>
-          <HomePost post={postSelected} />
+          <h1 className="app-title">CloneReddit</h1>
+          {postSelected && <Home post={postSelected} />}
         </div>
       </div>
     );

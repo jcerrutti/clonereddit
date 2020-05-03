@@ -2,25 +2,30 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import PostList from '../../components/PostList';
+import PostList from '../../components/post-list';
+import LoadingSpinner from '../../components/loading-spinner';
 import { selectPost } from '../../actions';
 import './style.css';
 
-function Sidebar({ posts, dispatch, postSelected }) {
+function Sidebar({ posts, dispatch, postSelected, isFetching }) {
   function postClicked(post) {
     dispatch(selectPost(post));
   }
 
   return (
     <aside>
-      {posts.map((post) => (
-        <PostList
-          isSelected={postSelected.id === post.id}
-          onClickHandler={postClicked}
-          key={post.id}
-          post={post}
-        />
-      ))}
+      {!isFetching ? (
+        posts.map((post) => (
+          <PostList
+            isSelected={postSelected.id === post.id}
+            onClickHandler={postClicked}
+            key={post.id}
+            post={post}
+          />
+        ))
+      ) : (
+        <LoadingSpinner />
+      )}
     </aside>
   );
 }

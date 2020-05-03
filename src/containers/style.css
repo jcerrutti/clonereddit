@@ -1,4 +1,9 @@
 .main-container {
   display: grid;
   grid-template-columns: 1fr 3fr;
+  height: 100vh;
+}
+
+.app-title {
+  text-align: center;
 }
