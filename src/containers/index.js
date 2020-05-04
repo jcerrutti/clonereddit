@@ -1,31 +1,36 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPosts } from '../actions';
+import { fetchPosts, dismissAll } from '../actions';
 import './style.css';
 
 import Sidebar from './sidebar';
 import Home from './home';
 
-class RedditApp extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
+function RedditApp(props) {
+  const { posts, postSelected, isFetching, dispatch } = props;
+  useEffect(() => {
     dispatch(fetchPosts('reactjs'));
+  }, []);
+
+  function onDismissAllClick() {
+    dispatch(dismissAll());
   }
 
-  render() {
-    const { posts, postSelected, isFetching } = this.props;
-
-    return (
-      <div className="main-container">
-        <Sidebar posts={posts} isFetching={isFetching} />
-        <div>
-          <h1 className="app-title">CloneReddit</h1>
-          {postSelected && <Home post={postSelected} />}
-        </div>
+  return (
+    <div className="main-container">
+      <Sidebar posts={posts} isFetching={isFetching} />
+      <div>
+        {!!posts.length && (
+          <button onClick={onDismissAllClick} className="dismiss-all-button">
+            Dismiss All
+          </button>
+        )}
+        <h1 className="app-title">CloneReddit</h1>
+        {postSelected && <Home post={postSelected} />}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 RedditApp.propTypes = {

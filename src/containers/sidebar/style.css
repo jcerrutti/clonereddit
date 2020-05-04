@@ -1,5 +1,12 @@
 aside {
-  border-right: 1px solid black;
+  border-right: 6px solid #f8f3eb;
   overflow-y: auto;
   max-height: 100vh;
+}
+
+.refresh-button {
+  font-size: 14px;
+  padding: 10px;
+  display: block;
+  margin: 0 auto;
 }

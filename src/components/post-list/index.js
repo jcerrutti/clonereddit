@@ -6,9 +6,14 @@ import commentIcon from '../../assets/comment.svg';
 import AlertCircle from '../alert-circle';
 import PostThumbnail from '../post-thumbnail';
 
-export default function PostList({ post, onClickHandler, isSelected }) {
+export default function PostList({ post, onClickHandler, onDismissPost, isSelected }) {
   const dateLabel = moment.unix(post.created_utc).utc().fromNow();
   const className = `post-list${isSelected ? ' selected' : ''}`;
+
+  function dismissPost(event, post) {
+    event.stopPropagation();
+    onDismissPost(post);
+  }
   return (
     <div className={className} onClick={() => onClickHandler(post)}>
       <h4 className="title">
@@ -26,6 +31,9 @@ export default function PostList({ post, onClickHandler, isSelected }) {
         {post.num_comments} comments
       </p>
       <p className="date-created">Created: {dateLabel}</p>
+      <button onClick={(e) => dismissPost(e, post)} className="dismiss-button">
+        Dismiss
+      </button>
     </div>
   );
 }

@@ -4,7 +4,8 @@
 
 .post-list {
   cursor: default;
-  margin: 20px 0;
+  padding: 20px;
+  border-bottom: 4px solid #f8f3eb;
 }
 
 .author,
@@ -29,4 +30,9 @@
 .comment-icon {
   width: 10px;
   margin-right: 4px;
+}
+
+.dismiss-button {
+  font-size: 12px;
+  padding: 4px;
 }

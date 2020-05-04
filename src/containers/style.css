@@ -7,3 +7,9 @@
 .app-title {
   text-align: center;
 }
+
+.dismiss-all-button {
+  margin: 0 auto;
+  font-size: 14px;
+  padding: 8px;
+}

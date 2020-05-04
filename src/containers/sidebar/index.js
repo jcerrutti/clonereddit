@@ -4,25 +4,40 @@ import PropTypes from 'prop-types';
 
 import PostList from '../../components/post-list';
 import LoadingSpinner from '../../components/loading-spinner';
-import { selectPost } from '../../actions';
+import { selectPost, dismissPost, fetchPosts } from '../../actions';
 import './style.css';
 
-function Sidebar({ posts, dispatch, postSelected, isFetching }) {
+function Sidebar({ posts, dispatch, postSelected, isFetching, subreddit }) {
   function postClicked(post) {
     dispatch(selectPost(post));
+  }
+
+  function postDismissed(post) {
+    dispatch(dismissPost(post));
+  }
+
+  function onRefreshAllClick() {
+    dispatch(fetchPosts(subreddit));
   }
 
   return (
     <aside>
       {!isFetching ? (
-        posts.map((post) => (
-          <PostList
-            isSelected={postSelected.id === post.id}
-            onClickHandler={postClicked}
-            key={post.id}
-            post={post}
-          />
-        ))
+        posts.length ? (
+          posts.map((post) => (
+            <PostList
+              isSelected={postSelected.id === post.id}
+              onDismissPost={postDismissed}
+              onClickHandler={postClicked}
+              key={post.id}
+              post={post}
+            />
+          ))
+        ) : (
+          <button onClick={onRefreshAllClick} className="refresh-button">
+            Refresh List
+          </button>
+        )
       ) : (
         <LoadingSpinner />
       )}
@@ -35,10 +50,11 @@ Sidebar.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { postSelected } = state;
+  const { postSelected, subreddit } = state;
 
   return {
-    postSelected: postSelected,
+    postSelected,
+    subreddit,
   };
 }
 
