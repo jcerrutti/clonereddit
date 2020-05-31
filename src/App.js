@@ -1,13 +1,12 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import configureStore from './store';
+import { Provider } from 'mobx-react';
+import PostStore from './mobx';
 import RedditApp from './containers';
 
-const store = configureStore();
 
 function App() {
   return (
-    <Provider store={store}>
+    <Provider postStore={new PostStore()}>
       <RedditApp />
     </Provider>
   );

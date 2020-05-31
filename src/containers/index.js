@@ -1,31 +1,53 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { fetchPosts, dismissAll } from '../actions';
-import './style.css';
+import { observer, inject } from 'mobx-react';
 
+import './style.css';
 import Sidebar from './sidebar';
 import Home from './home';
 
-function RedditApp(props) {
-  const { posts, postSelected, isFetching, dispatch } = props;
+function RedditApp({ postStore }) {
+  const { postSelected, posts, subreddit } = postStore;
+  const [selectedSubreddit, setSelectedSubreddit] = useState(subreddit);
   useEffect(() => {
-    dispatch(fetchPosts('reactjs'));
-  }, []);
+    searchPosts();
+  }, [postStore]);
 
   function onDismissAllClick() {
-    dispatch(dismissAll());
+    postStore.cleanPostList();
+  }
+
+  function searchPosts() {
+    postStore.getPosts(selectedSubreddit);
+  }
+
+  function onFormSubmit(event) {
+    event.preventDefault();
+    searchPosts();
   }
 
   return (
     <div className="main-container">
-      <Sidebar posts={posts} isFetching={isFetching} />
+      <Sidebar />
       <div>
-        {!!posts.length && (
-          <button onClick={onDismissAllClick} className="dismiss-all-button">
-            Dismiss All
-          </button>
-        )}
+        <nav className="navbar">
+          {!!posts.length && (
+            <button onClick={onDismissAllClick} className="dismiss-all-button">
+              Dismiss All
+            </button>
+          )}
+          <form onSubmit={onFormSubmit}>
+            <label htmlFor="subreddit">Subreddit</label>
+            <input
+              name="subreddit"
+              id="subreddit"
+              value={selectedSubreddit}
+              type="text"
+              onChange={(event) => setSelectedSubreddit(event.target.value.trim())}
+            />
+            <input type="submit" value="Search!" />
+          </form>
+        </nav>
         <h1 className="app-title">CloneReddit</h1>
         {postSelected && <Home post={postSelected} />}
       </div>
@@ -34,22 +56,7 @@ function RedditApp(props) {
 }
 
 RedditApp.propTypes = {
-  posts: PropTypes.array.isRequired,
-  postSelected: PropTypes.object,
-  isFetching: PropTypes.bool.isRequired,
-  lastUpdated: PropTypes.number,
-  dispatch: PropTypes.func.isRequired,
+  postStore: PropTypes.object,
 };
 
-function mapStateToProps(state) {
-  const { isFetching, lastUpdated, items: posts, postSelected } = state;
-
-  return {
-    posts: posts || [],
-    isFetching: isFetching || false,
-    postSelected: postSelected || null,
-    lastUpdated,
-  };
-}
-
-export default connect(mapStateToProps)(RedditApp);
+export default inject(({ postStore }) => ({ postStore }))(observer(RedditApp));

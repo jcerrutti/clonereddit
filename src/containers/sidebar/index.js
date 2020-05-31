@@ -1,23 +1,24 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { observer, inject } from 'mobx-react';
 
 import PostList from '../../components/post-list';
 import LoadingSpinner from '../../components/loading-spinner';
-import { selectPost, dismissPost, fetchPosts } from '../../actions';
 import './style.css';
 
-function Sidebar({ posts, dispatch, postSelected, isFetching, subreddit }) {
+function Sidebar({ postStore }) {
+  const { posts, isFetching, postSelected, subreddit } = postStore;
+
   function postClicked(post) {
-    dispatch(selectPost(post));
+    postStore.selectPost(post);
   }
 
   function postDismissed(post) {
-    dispatch(dismissPost(post));
+    postStore.dismissPost(post);
   }
 
   function onRefreshAllClick() {
-    dispatch(fetchPosts(subreddit));
+    postStore.getPosts(subreddit);
   }
 
   return (
@@ -46,16 +47,7 @@ function Sidebar({ posts, dispatch, postSelected, isFetching, subreddit }) {
 }
 
 Sidebar.propTypes = {
-  posts: PropTypes.array.isRequired,
+  postStore: PropTypes.object,
 };
 
-function mapStateToProps(state) {
-  const { postSelected, subreddit } = state;
-
-  return {
-    postSelected,
-    subreddit,
-  };
-}
-
-export default connect(mapStateToProps)(Sidebar);
+export default inject(({ postStore }) => ({ postStore }))(observer(Sidebar));
