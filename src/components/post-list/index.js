@@ -6,6 +6,8 @@ import commentIcon from '../../assets/comment.svg';
 import AlertCircle from '../alert-circle';
 import PostThumbnail from '../post-thumbnail';
 
+import { thumbnailExists } from '../../utils';
+
 export default function PostList({ post, onClickHandler, onDismissPost, isSelected }) {
   const dateLabel = moment.unix(post.created_utc).utc().fromNow();
   const className = `post-list${isSelected ? ' selected' : ''}`;
@@ -22,9 +24,7 @@ export default function PostList({ post, onClickHandler, onDismissPost, isSelect
       </h4>
       <p className="author">by {post.author}</p>
       <div>
-        {post.thumbnail !== 'self' && (
-          <PostThumbnail thumbnail={post.thumbnail} interactive={false} />
-        )}
+        {thumbnailExists(post.thumbnail) && <PostThumbnail thumbnail={post.thumbnail} interactive={false} />}
       </div>
       <p className="comments">
         <img className="comment-icon" alt="comment-icon" src={commentIcon} />

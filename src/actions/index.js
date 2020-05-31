@@ -13,10 +13,10 @@ function requestPosts(subreddit) {
   };
 }
 
-function receivePosts(json) {
+function receivePosts(data) {
   return {
     type: RECEIVE_POSTS,
-    posts: json.data.children.map((child) => ({ ...child.data, visited: false })),
+    posts: data.map((child) => ({ ...child, visited: false })),
   };
 }
 
